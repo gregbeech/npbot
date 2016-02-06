@@ -3,17 +3,22 @@
 $LOAD_PATH << File.join(__dir__, '..', 'lib')
 
 require 'pry'
-require 'np'
-require 'np/simulator'
+require 'np/bot'
+require 'np/sim/simulator'
 
 game_file = ARGV[0] # TODO: More options
 
-game = File.open(game_file) { |f| NP::Game.load(f) }
+game = File.open(game_file) { |f| NP::Sim::Game.load(f) }
 bot = NP::Bot.new(game)
-sim = NP::Simulator.new(bot)
+sim = NP::Sim::Simulator.new(bot)
 sim.print_game_state
 
 1.step(5).each do |i|
+  puts
+  puts '======================================================================='
+  puts "                                TICK #{i}"
+  puts '======================================================================='
+  puts
   sim.tick!
   sim.print_game_state
 end

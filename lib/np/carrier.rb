@@ -4,8 +4,7 @@ module NP
   class Carrier
     include Locatable
 
-    attr_reader :game, :id, :player_id
-    attr_accessor :name, :origin_star_id, :position, :last_position, :ships, :orders
+    attr_reader :game, :id, :player_id, :name, :origin_star_id, :position, :last_position, :ships, :orders
 
     def initialize(game, data)
       @game = game
@@ -29,16 +28,8 @@ module NP
       @game.stars[@origin_star_id]
     end
 
-    def origin_star=(star)
-      @origin_star_id = star&.id
-    end
-
     def warp_speed?
       @warp_speed
-    end
-
-    def warp_speed=(value)
-      @warp_speed = value
     end
 
     def looping?
@@ -56,7 +47,7 @@ module NP
     end
 
     def inspect
-      "#<Carrier '#{name}' @ #{position[0]},#{position[1]}>"
+      "#<Carrier '#{name}' (#{player.name}) @ #{position[0]},#{position[1]}>"
     end
 
     private

@@ -24,19 +24,37 @@ module NP
       # TODO: What is "c"?
     end
 
+    # Whether the details of this star are visible to the current player.
     def visible?
       @visible
     end
 
-    def warp_gate?
-      @warp_gate
-    end
-
+    # The player who currently owns the star; may be nil if not owned.
     def player
       @game.players[@player_id]
     end
 
+    # Whether this star has a warp gate. Will be nil if invisible.
+    def warp_gate?
+      return nil unless visible?
+      @warp_gate
+    end
+
+    # The number of new ships the star produces every tick. Will be nil if invisible.
+    def new_ships
+      return nil unless visible?
+      industry * (player.manufacturing.value + 5) / game.production_rate
+    end
+
+    # Carriers that are currently on the star. Will be empty if invisible.
+    def carriers
+      return [] unless visible?
+      @game.carriers.values.select { |c| distance(c) < 0.0001 } # TODO: Is this sufficient
+    end
+
+    # Stars that are reachable from this star. Will be empty if invisible.
     def reachable_stars
+      return [] unless visible?
       range = player.range.value
       # TODO
     end

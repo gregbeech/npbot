@@ -3,7 +3,7 @@ require 'np/game'
 describe NP::Game do
   describe '::load' do
     subject do
-      File.open(File.join(__dir__, 'data', 'game.json')) do |f|
+      File.open(File.join(__dir__, 'data', 'game-early.json')) do |f|
         described_class.load(f)
       end
     end
