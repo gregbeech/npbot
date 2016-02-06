@@ -55,30 +55,8 @@ module NP
 
       def star_tick!(star)
         star.produce_ships!
-
-        carriers = star.carriers
-        return unless carriers.map { |c| c.player_id }.uniq.size > 1
-
-        puts "========> battle at #{star.name}"
-
-        factions = carriers.group_by(&:player).sort_by do |p, cs|
-          [p == star.player ? 0 : 1, cs.map { |c| c.origin_star ? star.distance(c.origin_star) : 1000 }.max]
-        end
-
-        # TODO: This code is seriously awful, needs rewriting much better
-        while factions.size > 1
-          factions.each do |p1, _|
-            factions.reject { |p2, _| p1 == p2 }.each do |p2, cs|
-              damage = p2.weapons.value
-              ## FIXME: divide damage between carriers
-              cs.each { |c| c.ships -= damage }
-              cs.reject! { |c| c.ships <= 0 }
-            end
-          end
-          factions.reject! { |_, cs| cs.empty? }
-          game.carriers.reject! { |_, c| c.ships <= 0 }
-        end
-
+        # TODO: Ship actions here...
+        star.settle_dispute!
       end
     end
   end
