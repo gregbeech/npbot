@@ -1,9 +1,12 @@
+require 'np/game'
 require 'np/player'
 
 describe NP::Player do
+  let(:game) { instance_double(NP::Game) }
+
   describe '#initialize' do
     let(:data) do
-      OpenStruct.new(
+      Hashie::Mash.new(
         researching: 'propulsion',
         uid: 4,
         ai: 0,
@@ -11,7 +14,7 @@ describe NP::Player do
         total_fleets: 8,
         ready: 0,
         karma_to_give: 16,
-        war: OpenStruct.new(
+        war: {
           '0' => 3,
           '1' => 3,
           '2' => 3,
@@ -36,7 +39,7 @@ describe NP::Player do
           '21' => 3,
           '22' => 3,
           '23' => 3
-        ),
+        },
         total_industry: 27,
         total_stars: 12,
         regard: 0,
@@ -46,68 +49,68 @@ describe NP::Player do
         cash: 74,
         total_strength: 911,
         alias: 'notbobby',
-        tech: OpenStruct.new(
-          scanning: OpenStruct.new(
+        tech: {
+          scanning: {
             level: 3,
             sv: 0.25,
             value: 0.625,
             research: 325,
             bv: 0.125,
             brr: 144
-          ),
-          propulsion: OpenStruct.new(
+          },
+          propulsion: {
             level: 4,
             sv: 0.375,
             value: 0.875,
             research: 0,
             bv: 0.125,
             brr: 144
-          ),
-          terraforming: OpenStruct.new(
+          },
+          terraforming: {
             level: 4,
             sv: 0,
             value: 4,
             research: 8,
             bv: 1,
             brr: 144
-          ),
-          research: OpenStruct.new(
+          },
+          research: {
             level: 4,
             sv: 0,
             value: 480,
             research: 0,
             bv: 120,
             brr: 144
-          ),
-          weapons: OpenStruct.new(
+          },
+          weapons: {
             level: 5,
             sv: 0,
             value: 5,
             research: 3,
             bv: 1,
             brr: 144
-          ),
-          banking: OpenStruct.new(
+          },
+          banking: {
             level: 3,
             sv: 0,
             value: 3,
             research: 0,
             bv: 1,
             brr: 144
-          ),
-          manufacturing: OpenStruct.new(
+          },
+          manufacturing: {
             level: 3,
             sv: 0,
             value: 3,
             research: 4,
             bv: 1,
             brr: 144
-          )
-        ),
+          }
+        },
         avatar: 36,
         researching_next: 'banking',
         total_economy: 25,
-        countdown_to_war: OpenStruct.new(
+        countdown_to_war: {
           '0' => 0,
           '1' => 0,
           '2' => 0,
@@ -132,13 +135,13 @@ describe NP::Player do
           '21' => 0,
           '22' => 0,
           '23' => 0
-        ),
+        },
         missed_turns: 0)
     end
 
-    subject { NP::Player.new(data) }
+    subject { described_class.new(game, data) }
 
-    its(:researching) { should eq :hyperspace_range }
+    its(:researching) { should eq :range }
     its(:id) { should eq 4 }
     its(:ai?) { should eq false }
     its(:name) { should eq 'notbobby' }

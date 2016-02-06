@@ -1,9 +1,15 @@
 require 'np/carrier'
+require 'np/game'
 
 describe NP::Carrier do
+  let(:game) { instance_double(NP::Game, stars: {}) }
+  let(:star_144) { instance_double(NP::Star, id: 144) }
+  let(:star_191) { instance_double(NP::Star, id: 191) }
+  let(:star_192) { instance_double(NP::Star, id: 192) }
+
   describe '#initialize' do
     let(:data) do
-      OpenStruct.new(
+      Hashie::Mash.new(
         uid: 56,
         l: 1,
         o: [
@@ -21,14 +27,18 @@ describe NP::Carrier do
         ly: '1.00308646')
     end
 
-    subject { NP::Carrier.new(data) }
+    before do
+      allow(game).to receive(:stars).and_return(144 => star_144, 191 => star_191, 192 => star_192)
+    end
+
+    subject { described_class.new(game, data) }
 
     its(:id) { should eq 56 }
     its(:looping?) { should eq true }
     its(:orders) { should eq [
-      NP::Carrier::Orders.new(192, :collect_all, delay: 0, ships: 0),
-      NP::Carrier::Orders.new(144, :collect_all_but, delay: 0, ships: 3),
-      NP::Carrier::Orders.new(191, :drop_all, delay: 3, ships: 0),
+      NP::Carrier::Orders.new(star_192, :collect_all, delay: 0, ships: 0),
+      NP::Carrier::Orders.new(star_144, :collect_all_but, delay: 0, ships: 3),
+      NP::Carrier::Orders.new(star_191, :drop_all, delay: 3, ships: 0),
     ] }
     its(:name) { should eq 'Alrami I' }
     its(:player_id) { should eq 4 }

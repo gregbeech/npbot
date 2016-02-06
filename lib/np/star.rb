@@ -1,9 +1,14 @@
+require 'np/locatable'
+
 module NP
   class Star
-    attr_reader :id, :name, :player_id, :position, :economy, :industry,
-                 :science, :natural_resources, :resources, :ships
+    include Locatable
 
-    def initialize(data)
+    attr_reader :game, :id, :name, :player_id, :position, :economy, :industry,
+                :science, :natural_resources, :resources, :ships
+
+    def initialize(game, data)
+      @game = game
       @id = data.uid
       @name = data.n
       @player_id = data.puid
@@ -28,7 +33,16 @@ module NP
     end
 
     def player
-      raise NotImplementedError
+      @game.players[@player_id]
+    end
+
+    def reachable_stars
+      range = player.range.value
+      # TODO
+    end
+
+    def inspect
+      "#<Star '#{name}' @ #{position[0]},#{position[1]}>"
     end
   end
 end

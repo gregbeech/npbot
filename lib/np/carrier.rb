@@ -1,9 +1,14 @@
+require 'np/locatable'
+
 module NP
   class Carrier
-    attr_reader :id, :name, :player_id, :star_id, :position, :last_position,
+    include Locatable
+
+    attr_reader :game, :id, :name, :player_id, :star_id, :position, :last_position,
                 :ships, :orders
 
-    def initialize(data)
+    def initialize(game, data)
+      @game = game
       @id = data.uid
       @name = data.n
       @player_id = data.puid
@@ -24,14 +29,26 @@ module NP
       @warp_speed
     end
 
+    def player
+      @game.players[@player_id]
+    end
+
+    def star
+      @game.stars[@star_id]
+    end
+
+    def inspect
+      "#<Carrier '#{name}' @ #{position[0]},#{position[1]}>"
+    end
+
     private
 
     def make_orders(delay, star_id, action, ships)
-      Orders.new(star_id, Orders::ACTIONS[action], delay: delay, ships: ships)
+      Orders.new(@game.stars[star_id], Orders::ACTIONS[action], delay: delay, ships: ships)
     end
 
     class Orders
-      attr_reader :star_id, :action, :delay, :ships
+      attr_reader :star, :action, :delay, :ships
 
       ACTIONS = {
         0 => :do_nothing,
@@ -44,15 +61,16 @@ module NP
         7 => :garrison
       }
 
-      def initialize(star_id, action, delay: 0, ships: 0)
-        @star_id = star_id
+      def initialize(star, action, delay: 0, ships: 0)
+        @star = star
         @action = action
         @delay = delay
         @ships = ships
       end
 
       def ==(other)
-        %i[star_id action delay ships].all? do |attr_name|
+        return false unless star&.id == other.star&.id
+        %i[action delay ships].all? do |attr_name|
           public_send(attr_name) == other.public_send(attr_name)
         end
       end

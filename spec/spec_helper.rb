@@ -1,2 +1,2 @@
-require 'ostruct'
+require 'hashie/mash'
 require 'rspec/its'

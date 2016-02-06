@@ -1,10 +1,13 @@
+require 'np/game'
 require 'np/star'
 
 describe NP::Star do
+  let(:game) { instance_double(NP::Game) }
+
   describe '#initialize' do
     context 'when not visible' do
       let(:data) do
-        OpenStruct.new(
+        Hashie::Mash.new(
           uid: 6,
           n: 'Zosma',
           puid: 20,
@@ -13,7 +16,7 @@ describe NP::Star do
           x: '-1.1271')
       end
 
-      subject { NP::Star.new(data) }
+      subject { described_class.new(game, data) }
 
       its(:id) { should eq 6 }
       its(:name) { should eq 'Zosma' }
@@ -24,7 +27,7 @@ describe NP::Star do
 
     context 'when visible' do
       let(:data) do
-        OpenStruct.new(
+        Hashie::Mash.new(
           c: 0.91666666666666496, # TODO: What is this?
           e: 5,
           uid: 18,
@@ -41,7 +44,7 @@ describe NP::Star do
           st: 36)
       end
 
-      subject { NP::Star.new(data) }
+      subject { described_class.new(game, data) }
 
       its(:economy) { should eq 5 }
       its(:id) { should eq 18 }
