@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.join(__dir__, '..', 'lib')
+
+require 'pry'
+require 'np'
+require 'np/simulator'
+
+game_file = ARGV[0] # TODO: More options
+
+game = File.open(game_file) { |f| NP::Game.load(f) }
+bot = NP::Bot.new(game)
+sim = NP::Simulator.new(bot)
+sim.print_game_state
+
+1.step(5).each do |i|
+  sim.tick!
+  sim.print_game_state
+end
+

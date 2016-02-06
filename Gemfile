@@ -5,6 +5,7 @@ gem 'hashie'
 group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
-  gem 'rspec-its'
   gem 'pry'
+  gem 'pry-nav'
+  gem 'rspec-its'
 end

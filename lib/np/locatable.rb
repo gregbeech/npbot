@@ -7,10 +7,8 @@ module NP
       Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
     end
 
-    def travel_time(other)
-      (distance(other) / game.fleet_speed).ceil
-    end
-
+    # Whether the other object is in range of this one. Note that this is not transitive
+    # as the other object may be owned by a different player with a different range.
     def in_range?(other)
       distance(other) <= player.range.value
     end

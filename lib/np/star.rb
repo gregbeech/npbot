@@ -41,6 +41,12 @@ module NP
       # TODO
     end
 
+    def travel_time(star)
+      speed = game.fleet_speed
+      speed *= 3 if warp_gate? && star.warp_gate?
+      (distance(star) / speed).ceil
+    end
+
     def inspect
       "#<Star '#{name}' @ #{position[0]},#{position[1]}>"
     end

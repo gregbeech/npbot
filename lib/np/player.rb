@@ -1,12 +1,14 @@
 module NP
   class Player
-    attr_reader :game, :id, :name, :stats, :researching
+    attr_reader :game, :id, :name, :cash, :stats, :researching
 
     def initialize(game, data)
       @game = game
       @id = data.uid
       @name = data.alias
       @ai = data.ai.to_i != 0
+      @home_star_id = data.huid
+      @cash = data.cash # TODO: May want to move to Bank class or similar
       @stats = Stats.new(data)
       @tech = data.tech.map { |k, v| [tech_name(k), TechLevel.new(v)] }.to_h
       @researching = tech_name(data.researching)
@@ -20,6 +22,11 @@ module NP
       define_method attr_name do
         @tech[attr_name]
       end
+    end
+
+    # Only known for the current player.
+    def home_star
+      @game.stars[@home_star_id]
     end
 
     def stars
