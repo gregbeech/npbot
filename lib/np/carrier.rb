@@ -47,7 +47,7 @@ module NP
     end
 
     def inspect
-      "#<Carrier '#{name}' (#{player.name}) @ #{position[0]},#{position[1]}>"
+      "#<Carrier '#{name}' (#{player.name}) #{ships} ships @ #{position[0]},#{position[1]}>"
     end
 
     private

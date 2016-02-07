@@ -54,9 +54,9 @@ module NP
       end
 
       def star_tick!(star)
-        star.produce_ships!
-        # TODO: Ship actions here...
         star.settle_dispute!
+        # TODO: Ship actions here...
+        star.produce_ships!
       end
     end
   end

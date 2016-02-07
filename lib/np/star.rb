@@ -66,7 +66,7 @@ module NP
     end
 
     def inspect
-      "#<Star '#{name}' @ #{position[0]},#{position[1]}>"
+      "#<Star '#{name}' #{ships} ships @ #{position[0]},#{position[1]}>"
     end
   end
 end

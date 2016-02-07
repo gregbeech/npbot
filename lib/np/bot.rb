@@ -7,7 +7,7 @@ module NP
     end
 
     def star_reached!(star, carrier)
-      puts "--------> #{star.name} (#{star.player&.name || 'free'}) reached by #{carrier.name} (#{carrier.player.name})"
+      puts "--------> #{carrier.name} (#{carrier.player.name}) arrived at #{star.name} (#{star.player&.name || 'free'})"
     end
   end
 end
